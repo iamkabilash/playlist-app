@@ -16,6 +16,7 @@ const songsSlice = createSlice({
   },
   extraReducers(builder) {
     // to reset songs while reseting movies list.
+    /// "movie/reset" or moviesSlice.actions.reset
     builder.addCase("movie/reset", (state, action) => {
       return [];
     });
