@@ -1,11 +1,11 @@
-import { configureStore, createSlice } from "@reduxjs/toolkit";
+import { configureStore, createSlice, createAction } from "@reduxjs/toolkit";
+
+const reset = createAction("app/reset");
 
 const songsSlice = createSlice({
   name: "song",
   initialState: [],
   reducers: {
-    // runs only when "name" + "/" + "fn" is dispatched as action from reducer
-    // in this case song/addSong
     addSong(state, action) {
       state.push(action.payload);
     },
@@ -15,9 +15,7 @@ const songsSlice = createSlice({
     },
   },
   extraReducers(builder) {
-    // to reset songs while reseting movies list.
-    /// "movie/reset" or moviesSlice.actions.reset
-    builder.addCase("movie/reset", (state, action) => {
+    builder.addCase(reset, (state, action) => {
       return [];
     });
   },
@@ -34,9 +32,11 @@ const movieSlice = createSlice({
       const index = state.indexOf(state.payload);
       state.splice(index, 1);
     },
-    reset(state, action) {
+  },
+  extraReducers(builder) {
+    builder.addCase(reset, (state, action) => {
       return [];
-    },
+    });
   },
 });
 
@@ -47,14 +47,7 @@ const store = configureStore({
   },
 });
 
-// const startingState = store.getState();
-// console.log(startingState);
-
-// store.dispatch(songsSlice.actions.addSong("Some song"));
-
-// const finalState = store.getState();
-// console.log(finalState);
-
 export { store };
 export const { addSong, removeSong } = songsSlice.actions;
-export const { addMovie, removeMovie, reset } = movieSlice.actions;
+export const { addMovie, removeMovie } = movieSlice.actions;
+export { reset };
